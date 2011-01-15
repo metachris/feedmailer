@@ -22,11 +22,12 @@
         <tr><th>Feed</th><th>Date added</th><th>Last Crawled</th><th>New Entries</th><th>Digest</th></tr>
         {% for feed in feeds %}
           <tr>
-            <td><a href="{{ feed.link_rss }}">{{ feed.title }}</a></td>
-            <td>{{ feed.date_added }}</td>
-            <td>{{ feed.date_last_crawled }}</td>
+            <td><a href="/feeds/update/{{ feed.key }}">{{ feed.title }}</a></td>
+            <td>{{ feed.date_added|date }}</td>
+            <td>{{ feed.date_last_crawled|date }}, {{ feed.date_last_crawled|time }}</td>
             <td>{{ feed.feeditemnew_set.count }}</td>
-            <td>{{ feed.digest_type }} <small>[<a href="/feeds/update/{{ feed.key }}">update</a>]</td>
+            <td>{% ifequal feed.digest_days 0 %}Instant{% else %}{{ feed.digest_time|time }}, {{ feed.digest_days }}{% endifequal %}</td>
+            <td><small><a href="{{ feed.link_rss }}">xml</a></td>
           </tr>
         {% endfor %}    
     </table>

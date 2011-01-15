@@ -23,7 +23,7 @@ class Feed(db.Model):
     date_added = db.DateProperty(auto_now_add=True)
     date_last_crawled = db.DateTimeProperty(auto_now_add=True)
     
-    digest_days = db.IntegerProperty() # bitfild of days to send digest (Mo=1, Tue=2, Wed=4, ...) or 0=instant
+    digest_days = db.IntegerProperty(default=0) # bitfild of days to send digest (Mo=1, Tue=2, Wed=4, ...) or 0=instant
     digest_time = db.TimeProperty(default=datetime_time(12, 0)) # time to send digest on specified days
 
 class FeedItemNew(db.Model):

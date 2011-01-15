@@ -1,0 +1,32 @@
+<html>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  <body>
+    <h3>Hello, {{ user.nickname }}</h3>
+    
+    <a href="/feeds">< back</a>
+
+    <hr>
+
+    <h3>Delete Feed</h3>
+    
+    <table border="0">
+    <tr><td valign="top">
+    
+    <table border="0">
+      <tr><td>Feed:</td><td><a href="{{ feed.link_rss }}">{{ feed.title }}</a></td></tr>
+      <tr><td>Date added:</td><td>{{ feed.date_added|date }}</td></tr>
+      <tr><td>Last crawled:</td><td>{{ feed.date_last_crawled.date|date }}, {{ feed.date_last_crawled.time|time }} </td></tr>
+      <tr><td>New items:</td><td>{{ feed.feeditemnew_set.count }}</td></tr>
+    </table>
+
+    <br><br>
+    <form action="/feeds/delete/{{ feed.key }}" method="post">
+        <p>Do you really want to remove this feed?</p>
+        <input type="submit" name="delete" value="Yes, remove feed" /> <input type="submit" name="cancel" value="No, thanks" />  
+    </form>      
+
+    </td><td style="width:40px;">&nbsp;</td><td valign="top">
+    </td></tr>
+    </table>
+  </body>
+</html>

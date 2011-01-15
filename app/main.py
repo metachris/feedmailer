@@ -10,6 +10,7 @@ urls = [
     ('/', MainPage),
     ('/feeds', FeedsPage),
     (r'/feeds/update/(.*)', FeedSettings),
+    (r'/feeds/delete/(.*)', FeedDelete),
 ]
 
 application = webapp.WSGIApplication(urls, debug=True)

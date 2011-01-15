@@ -20,23 +20,26 @@
     </table>
 
     <br><br>
-    <input type="button" value="Remove Feed" />      
+    <form action="/feeds/delete/{{ feed.key }}" method="post">
+        <input type="submit" value="Remove Feed" />
+    </form>      
 
     </td><td style="width:40px;">&nbsp;</td><td valign="top">
     
-    <h3>Digest</h3>
-    <form action=".">
+    <h3>Digest: {{ feed.digest_days }}</h3>
+    <form action="/feeds/update/{{ feed.key }}" method="post">
         <table border="0">
-            <tr><td><label for="d-">Instant</label></td><td><input type="checkbox" name="d-" id="d-" value="1" /></td></tr>
+            <tr><td><label for="d-">Instant</label></td><td><input type="checkbox" name="d-" id="d-" {% ifequal feed.digest_days 0 %}checked=checked{% endifequal %} /></td></tr>
 
             <tr><td>&nbsp;</td></tr>
 
-            <tr><td><label for="d0">Monday</label></td>   <td><input type="checkbox" name="d0" id="d0" value="1" /></td></tr>
-            <tr><td><label for="d1">Tuesday</label></td>  <td><input type="checkbox" name="d1" id="d1" value="1" /></td></tr>
-            <tr><td><label for="d2">Wednesday</label></td><td><input type="checkbox" name="d2" id="d2" value="1" /></td></tr>
-            <tr><td><label for="d3">Friday</label></td>   <td><input type="checkbox" name="d3" id="d3" value="1" /></td></tr>
-            <tr><td><label for="d4">Saturday</label></td> <td><input type="checkbox" name="d4" id="d4" value="1" /></td></tr>
-            <tr><td><label for="d5">Sunday</label></td>   <td><input type="checkbox" name="d5" id="d5" value="1" /></td></tr>            
+            <tr><td><label for="d0">Monday</label></td>   <td><input type="checkbox" name="d0" id="d0" {% if days.0 %}checked=checked{% endif %} /></td></tr>
+            <tr><td><label for="d1">Tuesday</label></td>  <td><input type="checkbox" name="d1" id="d1" {% if days.1 %}checked=checked{% endif %} /></td></tr>
+            <tr><td><label for="d2">Wednesday</label></td><td><input type="checkbox" name="d2" id="d2" {% if days.2 %}checked=checked{% endif %} /></td></tr>
+            <tr><td><label for="d3">Thursday</label></td> <td><input type="checkbox" name="d3" id="d3" {% if days.3 %}checked=checked{% endif %} /></td></tr>
+            <tr><td><label for="d4">Friday</label></td>   <td><input type="checkbox" name="d4" id="d4" {% if days.4 %}checked=checked{% endif %} /></td></tr>
+            <tr><td><label for="d5">Saturday</label></td> <td><input type="checkbox" name="d5" id="d5" {% if days.5 %}checked=checked{% endif %} /></td></tr>            
+            <tr><td><label for="d6">Sunday</label></td>   <td><input type="checkbox" name="d6" id="d6" {% if days.6 %}checked=checked{% endif %} /></td></tr>            
             <tr><td>Time (hh:mm):</td><td><input type="text" name="dt" size="6" value="{{ feed.digest_time|time:"H:i" }}" /></td></tr>
             
             <tr><td><br><input type="submit" value="Update" /></td></tr>
