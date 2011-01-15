@@ -12,6 +12,13 @@ indexes:
 
 - kind: Feed
   properties:
+  - name: link
+  - name: user
+  - name: date_added
+    direction: desc
+
+- kind: Feed
+  properties:
   - name: user
   - name: date
     direction: desc

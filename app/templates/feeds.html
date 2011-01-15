@@ -1,7 +1,7 @@
 <html>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
   <body>
-    <h2>Your Feeds</h2>
+    <h3>Hi {{ username }}</h3>
     
     <a href="{{ url }}">{{ url_linktext }}</a>
 
@@ -15,13 +15,16 @@
     </p>
     
     <hr>
+
+    <h2>Your Feeds</h2>
     
     <p>
-    {% for feed in feeds %}
-      {{ feed.title }}
-    {% endfor %}
+    <ul>
+        {% for feed in feeds %}
+          <li>{{ feed.title }}</li>
+        {% endfor %}
+    </ul>
     </p>
-    
-    {{ o }}
+
   </body>
 </html>
