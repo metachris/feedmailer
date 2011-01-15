@@ -8,7 +8,8 @@ from modules.handlers import *
 
 urls = [
     ('/', MainPage),
-    ('/feeds', FeedsPage)
+    ('/feeds', FeedsPage),
+    (r'/feeds/update/(.*)', FeedSettings),
 ]
 
 application = webapp.WSGIApplication(urls, debug=True)

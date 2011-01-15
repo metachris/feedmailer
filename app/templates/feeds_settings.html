@@ -1,26 +1,16 @@
 <html>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
   <body>
-    <h3>Hello, {{ username }}</h3>
+    <h3>Hello, {{ user.nickname }}</h3>
     
     <a href="{{ url }}">{{ url_linktext }}</a>
 
     <hr>
-    
-    <p>
-    
-    <form action="/feeds" method="post">
-        Add a feed: <input type="text" name="uri" /> <input type="submit" />
-    </form>
-    </p>
-    
-    <hr>
 
-    <h3>Your Feeds</h3>
+    <h3>Feed Settings</h3>
     
     <table border="0">
         <tr><th>Feed</th><th>Date added</th><th>Last Crawled</th><th>New Entries</th><th>Digest</th></tr>
-        {% for feed in feeds %}
           <tr>
             <td><a href="{{ feed.link_rss }}">{{ feed.title }}</a></td>
             <td>{{ feed.date_added }}</td>
@@ -28,7 +18,6 @@
             <td>{{ feed.feeditemnew_set.count }}</td>
             <td>{{ feed.digest_type }} <small>[<a href="/feeds/update/{{ feed.key }}">update</a>]</td>
           </tr>
-        {% endfor %}    
     </table>
 
   </body>

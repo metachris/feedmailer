@@ -5,6 +5,8 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 
+from models import *
+
 from lib import feedparser
 
 class MainPage(webapp.RequestHandler):
@@ -36,6 +38,7 @@ class FeedsPage(webapp.RequestHandler):
         feeds = db.GqlQuery("SELECT * FROM Feed WHERE user = :1 ORDER BY date_added DESC", user)
 
         template_values = {
+            'user': user,
             'username': user.nickname(), 
             'url': url,
             'url_linktext': url_linktext,
@@ -64,8 +67,29 @@ class FeedsPage(webapp.RequestHandler):
                 return 
                     
             # Valid feed, add to list
-            feed = Feed(user=user, title=f.feed.title, link=f.feed.link)
+            feed = Feed(user=user, title=f.feed.title, link_web=f.feed.link, link_rss=f.href)
             feed.put()
             
+            # Store all entries in DB
+            for entry in f.entries:
+                item = FeedItemNew(feed=feed, title=entry.title, link=entry.link)
+                item.put()
+                
         self.redirect("/feeds")
         return 
+
+
+class FeedSettings(webapp.RequestHandler):
+    def get(self, key):
+        user = users.get_current_user()
+
+        feeds = db.GqlQuery("SELECT * FROM Feed WHERE __key__ = :1", db.Key(key))
+        
+        template_values = {
+            'user': user,
+            'feed': feeds.fetch(1)[0],
+            }
+                                    
+        path = os.path.join(os.path.dirname(__file__), '../templates/feeds_settings.html')
+        self.response.out.write(template.render(path, template_values))        
+
