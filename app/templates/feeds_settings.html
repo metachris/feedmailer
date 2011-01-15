@@ -3,22 +3,53 @@
   <body>
     <h3>Hello, {{ user.nickname }}</h3>
     
-    <a href="{{ url }}">{{ url_linktext }}</a>
+    <a href="/feeds">< back</a>
 
     <hr>
 
     <h3>Feed Settings</h3>
     
     <table border="0">
-        <tr><th>Feed</th><th>Date added</th><th>Last Crawled</th><th>New Entries</th><th>Digest</th></tr>
-          <tr>
-            <td><a href="{{ feed.link_rss }}">{{ feed.title }}</a></td>
-            <td>{{ feed.date_added }}</td>
-            <td>{{ feed.date_last_crawled }}</td>
-            <td>{{ feed.feeditemnew_set.count }}</td>
-            <td>{{ feed.digest_type }} <small>[<a href="/feeds/update/{{ feed.key }}">update</a>]</td>
-          </tr>
+    <tr><td valign="top">
+    
+    <table border="0">
+      <tr><td>Feed:</td><td><a href="{{ feed.link_rss }}">{{ feed.title }}</a></td></tr>
+      <tr><td>Date added:</td><td>{{ feed.date_added|date }}</td></tr>
+      <tr><td>Last crawled:</td><td>{{ feed.date_last_crawled.date|date }}, {{ feed.date_last_crawled.time|time }} </td></tr>
+      <tr><td>New items:</td><td>{{ feed.feeditemnew_set.count }}</td></tr>
     </table>
 
+    <br><br>
+    <input type="button" value="Remove Feed" />      
+
+    </td><td style="width:40px;">&nbsp;</td><td valign="top">
+    
+    <h3>Digest</h3>
+    <form action=".">
+        <table border="0">
+            <tr><td><label for="d-">Instant</label></td><td><input type="checkbox" name="d-" id="d-" value="1" /></td></tr>
+
+            <tr><td>&nbsp;</td></tr>
+
+            <tr><td><label for="d0">Monday</label></td>   <td><input type="checkbox" name="d0" id="d0" value="1" /></td></tr>
+            <tr><td><label for="d1">Tuesday</label></td>  <td><input type="checkbox" name="d1" id="d1" value="1" /></td></tr>
+            <tr><td><label for="d2">Wednesday</label></td><td><input type="checkbox" name="d2" id="d2" value="1" /></td></tr>
+            <tr><td><label for="d3">Friday</label></td>   <td><input type="checkbox" name="d3" id="d3" value="1" /></td></tr>
+            <tr><td><label for="d4">Saturday</label></td> <td><input type="checkbox" name="d4" id="d4" value="1" /></td></tr>
+            <tr><td><label for="d5">Sunday</label></td>   <td><input type="checkbox" name="d5" id="d5" value="1" /></td></tr>            
+            <tr><td>Time (hh:mm):</td><td><input type="text" name="dt" size="6" value="{{ feed.digest_time|time:"H:i" }}" /></td></tr>
+            
+            <tr><td><br><input type="submit" value="Update" /></td></tr>
+        </table>    
+
+    </form>
+
+    
+    <p style="max-width:500px">Feeds are crawled once every hour. If digest is set to "instant" the email
+    will be sent immediately. Else all new entries will be sent in the next scheduled
+    digest.
+    </p>
+    </td></tr>
+    </table>
   </body>
 </html>

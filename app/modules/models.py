@@ -1,5 +1,6 @@
 from google.appengine.ext import db
 from google.appengine.api import users
+from datetime import time as datetime_time
 
 class UserPrefs(db.Model):
     user = db.UserProperty()
@@ -22,7 +23,8 @@ class Feed(db.Model):
     date_added = db.DateProperty(auto_now_add=True)
     date_last_crawled = db.DateTimeProperty(auto_now_add=True)
     
-    digest_type = db.IntegerProperty()
+    digest_days = db.IntegerProperty() # bitfild of days to send digest (Mo=1, Tue=2, Wed=4, ...) or 0=instant
+    digest_time = db.TimeProperty(default=datetime_time(12, 0)) # time to send digest on specified days
 
 class FeedItemNew(db.Model):
     """Feed entries before email was sent"""

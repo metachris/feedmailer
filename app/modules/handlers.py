@@ -75,7 +75,7 @@ class FeedsPage(webapp.RequestHandler):
                 item = FeedItemNew(feed=feed, title=entry.title, link=entry.link)
                 item.put()
                 
-        self.redirect("/feeds")
+        self.redirect("/feeds/update/%s" % feed.key())
         return 
 
 
