@@ -1,0 +1,27 @@
+<html>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  <body>
+    <h2>Your Feeds</h2>
+    
+    <a href="{{ url }}">{{ url_linktext }}</a>
+
+    <hr>
+    
+    <p>
+    Add a feed:
+    <form action="/feeds" method="post">
+        URL: <input type="text" name="uri" /> <input type="submit" />
+    </form>
+    </p>
+    
+    <hr>
+    
+    <p>
+    {% for feed in feeds %}
+      {{ feed.title }}
+    {% endfor %}
+    </p>
+    
+    {{ o }}
+  </body>
+</html>
