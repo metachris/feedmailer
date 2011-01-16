@@ -27,14 +27,16 @@ class MainPage(webapp.RequestHandler):
             'greeting': greeting,
             'url': url,
             'url_linktext': url_linktext,
-            }
+        }
 
         path = os.path.join(os.path.dirname(__file__), '../templates/index.html')
         self.response.out.write(template.render(path, template_values))        
 
 class FeedsPage(webapp.RequestHandler):
     def get(self):
-        user = users.get_current_user() 
+        user = users.get_current_user()
+        user_prefs = getUserPrefs(user)
+        user_dig = getUserDigestIntervals(user)
         url = users.create_logout_url(self.request.uri)
         url_linktext = 'Logout'
 
@@ -46,7 +48,7 @@ class FeedsPage(webapp.RequestHandler):
             'url': url,
             'url_linktext': url_linktext,
             'feeds': feeds,
-            }
+        }
                                     
         path = os.path.join(os.path.dirname(__file__), '%sfeeds.html' % TEMPLATES_DIR)
         self.response.out.write(template.render(path, template_values))        
@@ -72,11 +74,6 @@ class FeedsPage(webapp.RequestHandler):
             # Valid feed, add to list
             feed = Feed(user=user, title=f.feed.title, link_web=f.feed.link, link_rss=f.href)
             feed.put()
-            
-            # Store all entries in DB
-            for entry in f.entries:
-                item = FeedItemSent(feed=feed, title=entry.title, link=entry.link)
-                item.put()
                 
         self.redirect("/feeds/update/%s" % feed.key())
         return 
@@ -98,7 +95,7 @@ class FeedSettings(webapp.RequestHandler):
             'user': user,
             'feed': feed,
             'days': days
-            }
+        }
                                     
         path = os.path.join(os.path.dirname(__file__), '%sfeeds_settings.html' % TEMPLATES_DIR)
         self.response.out.write(template.render(path, template_values))        
