@@ -17,14 +17,15 @@ class Feed(db.Model):
     title = db.StringProperty(required=True)
     link_web = db.StringProperty(required=True)
     link_rss = db.StringProperty(required=True)
-    hub = db.StringProperty(default=None)   # pubsubhubbub link
-    #type = db.StringProperty() # rss, atom, etc
+    #hub = db.StringProperty(default=None) # pubsubhubbub link
 
     date_added = db.DateProperty(auto_now_add=True)
     date_last_crawled = db.DateTimeProperty(auto_now_add=True)
+    date_last_email = db.DateTimeProperty()
     
-    digest_days = db.IntegerProperty(default=0) # bitfild of days to send digest (Mo=1, Tue=2, Wed=4, ...) or 0=instant
-    digest_time = db.TimeProperty(default=datetime_time(12, 0)) # time to send digest on specified days
+    # bitfild of days to send digest (Mo=1, Tue=2, Wed=4, ...) or 0=instant
+    digest_days = db.IntegerProperty(default=0) 
+    digest_time = db.TimeProperty(default=datetime_time(12, 0))
 
 class FeedItemNew(db.Model):
     """Feed entries before email was sent"""

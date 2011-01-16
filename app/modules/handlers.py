@@ -10,6 +10,8 @@ from datetime import time as datetime_time
 from models import *
 from lib import feedparser
 
+TEMPLATES_DIR = "../templates/"
+
 class MainPage(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user() 
@@ -46,7 +48,7 @@ class FeedsPage(webapp.RequestHandler):
             'feeds': feeds,
             }
                                     
-        path = os.path.join(os.path.dirname(__file__), '../templates/feeds.html')
+        path = os.path.join(os.path.dirname(__file__), '%sfeeds.html' % TEMPLATES_DIR)
         self.response.out.write(template.render(path, template_values))        
 
     def post(self):
@@ -85,7 +87,7 @@ class FeedSettings(webapp.RequestHandler):
         user = users.get_current_user()
 
         feeds = db.GqlQuery("SELECT * FROM Feed WHERE __key__ = :1 AND user = :2", db.Key(key), user)
-        feed = feeds.fetch(1)[0]
+        feed = feeds.get() #fetch(1)[0]
 
         # map bitfield entries of digest_days to dictionary 0..6 [Mo..Sun]        
         days = {}
@@ -98,7 +100,7 @@ class FeedSettings(webapp.RequestHandler):
             'days': days
             }
                                     
-        path = os.path.join(os.path.dirname(__file__), '../templates/feeds_settings.html')
+        path = os.path.join(os.path.dirname(__file__), '%sfeeds_settings.html' % TEMPLATES_DIR)
         self.response.out.write(template.render(path, template_values))        
 
     def post(self, key):
@@ -132,21 +134,16 @@ class FeedDelete(webapp.RequestHandler):
         user = users.get_current_user()
 
         feeds = db.GqlQuery("SELECT * FROM Feed WHERE __key__ = :1 AND user = :2", db.Key(key), user)
-        feed = feeds.fetch(1)[0]
+        feed = feeds.get() #fetch(1)[0]
 
         if self.request.get("cancel"):
             self.redirect("/feeds/update/%s" % feed.key())
+            return 
             
         if self.request.get("delete"):
             feed.delete()
             self.redirect("/feeds")
             
         else:
-
-            template_values = {
-                'user': user,
-                'feed': feed,
-            }
-                        
-            path = os.path.join(os.path.dirname(__file__), '../templates/feeds_delete.html')
-            self.response.out.write(template.render(path, template_values))        
+            path = os.path.join(os.path.dirname(__file__), '%sfeeds_delete.html' % TEMPLATES_DIR)
+            self.response.out.write(template.render(path, { 'user': user, 'feed': feed }))        

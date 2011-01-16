@@ -16,7 +16,7 @@
     
     <hr>
 
-    <h3>Your Feeds</h3>
+
     
     <table border="0">
         <tr><th>Feed</th><th>Date added</th><th>Last Crawled</th><th>New Entries</th><th>Digest</th></tr>
@@ -27,7 +27,7 @@
             <td>{{ feed.date_last_crawled|date }}, {{ feed.date_last_crawled|time }}</td>
             <td>{{ feed.feeditemnew_set.count }}</td>
             <td>{% ifequal feed.digest_days 0 %}Instant{% else %}{{ feed.digest_time|time }}, {{ feed.digest_days }}{% endifequal %}</td>
-            <td><small><a href="{{ feed.link_rss }}">xml</a></td>
+            <td><small><a href="{{ feed.link_rss }}">link</a></td>
           </tr>
         {% endfor %}    
     </table>
