@@ -7,12 +7,16 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
-- url: /feeds
+- url: /feeds.*
   script: main.py
   login: required
+
+- url: /services.*
+  script: services.py
+  login: admin
     
 - url: .*
   script: main.py
-
+  
 builtins:
 - datastore_admin: on

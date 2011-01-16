@@ -50,13 +50,13 @@ def getUserNextDigestDateTime(user, updateFeedDigestNext=False):
     
 def updateUserNextDigest(user, prefs):
     """Updates _digest_next on user and on all its feeds. Triggered at:
-    - feed update
-    - interval settings update
-    - send mail
+    - adding feed
+    - feed custom interval update
+    - global interval settings update (not yet impl.)
+    - reaching next scheduled digest (maybe sending mail)
     """
     next = getUserNextDigestDateTime(user, True) # True = update all Feeds for next schedule
     prefs._digest_next = next
     prefs.save()
     
-    print datetime.datetime.now()
     return next

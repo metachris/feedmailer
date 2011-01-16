@@ -39,6 +39,7 @@ class FeedsPage(webapp.RequestHandler):
         user = users.get_current_user()
         user_prefs = getUserPrefs(user)
         user_dig = getUserDigestIntervals(user)
+        
         url = users.create_logout_url(self.request.uri)
         url_linktext = 'Logout'
 
@@ -75,7 +76,19 @@ class FeedsPage(webapp.RequestHandler):
                     
             # Valid feed, add to list
             feed = Feed(user=user, title=f.feed.title, link_web=f.feed.link, link_rss=f.href)
+
+            # Append entries to "read" list to not send in next email
+            # Reverse for adding newest items later, first items in _recent_items are oldest
+            f.entries.reverse()
+            for entry in f.entries:
+                feed._recent_items.append(entry.link)
+            while len(feed._recent_items) > 10:
+                feed._recent_items.pop(0)
+
             feed.put()
+
+            # Update User and Feed for _digest_next datetime 
+            updateUserNextDigest(user, getUserPrefs(user))
                 
         self.redirect("/feeds/update/%s" % feed.key())
         return 
@@ -126,6 +139,10 @@ class FeedSettings(webapp.RequestHandler):
             feed.digest_days = days_bitfield
             
         feed.save()
+
+        # Update User and Feed for _digest_next datetime 
+        updateUserNextDigest(user, getUserPrefs(user))
+        
         self.redirect("/feeds/update/%s" % key)
 
 class FeedDelete(webapp.RequestHandler):
@@ -154,5 +171,4 @@ class Test(webapp.RequestHandler):
 
         print user
         print user_prefs
-                
         print updateUserNextDigest(user, user_prefs)

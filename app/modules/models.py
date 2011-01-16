@@ -1,6 +1,9 @@
 from google.appengine.ext import db
 from google.appengine.api import users
-from datetime import time as datetime_time
+
+import datetime
+
+from tools import calcNextDigestDateTime
 
 class UserPrefs(db.Model):
     user = db.UserProperty(required=True)
@@ -18,7 +21,7 @@ class UserPrefs(db.Model):
     _items_ready = db.BooleanProperty(default=False)
     
     # Next scheduled email sending
-    _digest_next = db.DateTimeProperty()
+    _digest_next = db.DateTimeProperty(default=datetime.datetime.now())
     
 def getUserPrefs(user):
     """Get or create user preference object"""
@@ -37,7 +40,7 @@ class UserDigestInterval(db.Model):
     title = db.StringProperty(required=True)
     
     digest_days = db.IntegerProperty(default=0)
-    digest_time = db.TimeProperty(default=datetime_time(12, 0))
+    digest_time = db.TimeProperty(default=datetime.time(12, 0))
 
 def getUserDigestIntervals(user):
     """Get or create digest interval object"""
@@ -67,13 +70,21 @@ class Feed(db.Model):
     
     # bitfild of days to send digest (Mo=1, Tue=2, Wed=4, ...) or 0=instant
     digest_days = db.IntegerProperty(default=0) 
-    digest_time = db.TimeProperty(default=datetime_time(12, 0))
+    digest_time = db.TimeProperty(default=datetime.time(12, 0))
 
     # last email and when next is scheduled. updated with either
     # 1. digest interval update by user on web
     # 2. when next email was sent by system  
-    _digest_next = db.DateTimeProperty()
-    
+    _digest_next = db.DateTimeProperty(default=datetime.datetime.now())
+
+    # A list of 10 recent item links for feed crawler to know which items
+    # in the feed are new. Helps in case a blogger changes or removes stories 
+    _recent_items = db.StringListProperty()
+
+    #def _update_digest_next(self):
+    #    self._digest_next = calcNextDigestDateTime(self.digest_days, self.digest_time)
+    #    self.save()
+        
 class FeedItem(db.Model):
     """Feed item waiting to be sent to the user on next delivery interval"""
     feed = db.ReferenceProperty(Feed, required=True)
@@ -81,4 +92,4 @@ class FeedItem(db.Model):
     title = db.StringProperty(required=True)
     link = db.StringProperty(required=True)
         
-    date_added = db.DateProperty(auto_now_add=True)
+    date_added = db.DateTimeProperty(auto_now_add=True)
