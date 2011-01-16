@@ -8,11 +8,18 @@ class UserPrefs(db.Model):
     date_joined = db.DateTimeProperty(auto_now_add=True)    
     date_lastlogin = db.DateTimeProperty(auto_now_add=True)    
     emails_received = db.IntegerProperty(default=0)
-    
+
     # If true, all feeds will be combined into one digest,
     # if false every feed is delivered in a separate email.
     combined_digest = db.BooleanProperty(default=True)
 
+    # if items are ready to be sent by email
+    # ~ user.feeditem_set.count() > 0
+    _items_ready = db.BooleanProperty(default=False)
+    
+    # Next scheduled email sending
+    _digest_next = db.DateTimeProperty()
+    
 def getUserPrefs(user):
     """Get or create user preference object"""
     if user:
@@ -47,20 +54,26 @@ class Feed(db.Model):
     title = db.StringProperty(required=True)
     link_web = db.StringProperty(required=True)
     link_rss = db.StringProperty(required=True)
-
-    #hub = db.StringProperty(default=None) # pubsubhubbub link
+    #link_hub = db.StringProperty(default=None) # pubsubhubbub link
+    
     date_added = db.DateProperty(auto_now_add=True)
     date_last_crawled = db.DateTimeProperty(auto_now_add=True)
-    date_last_email = db.DateTimeProperty()
     
     # digest timing can either be a group or a custom setting.
-    # if digest_group == None, use custom settings, else group
+    # if digest_group == None: use custom settings, 
+    # else: use group and overwrite custom settings with group settings 
+    #      (needed for querying feeds that need to send emails)
     digest_group = db.ReferenceProperty(UserDigestInterval)
     
     # bitfild of days to send digest (Mo=1, Tue=2, Wed=4, ...) or 0=instant
     digest_days = db.IntegerProperty(default=0) 
     digest_time = db.TimeProperty(default=datetime_time(12, 0))
 
+    # last email and when next is scheduled. updated with either
+    # 1. digest interval update by user on web
+    # 2. when next email was sent by system  
+    _digest_next = db.DateTimeProperty()
+    
 class FeedItem(db.Model):
     """Feed item waiting to be sent to the user on next delivery interval"""
     feed = db.ReferenceProperty(Feed, required=True)
