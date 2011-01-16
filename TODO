@@ -1,0 +1,10 @@
+Frontend
+* html - design, layout, formatting, etc
+* nice formatting of digest_days
+
+Backend
+* Feed interval groups -- on feed details set either interval group or custom interval
+
+* Feed._recent_items: used to avoid resending items after title or link change
+  currently: only item_link, but if dev changes link we are screwed. Todo: add
+  link and title-hash to _recent_items
