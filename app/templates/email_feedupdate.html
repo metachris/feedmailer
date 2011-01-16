@@ -1,0 +1,13 @@
+Hello, {{ user.nickname }}
+
+You have feed updates:
+
+{% for feed in feeds %}
+    Feed: {{ feed.feed.title }}, {{ feed.feed.link_web }}
+    
+    Items:
+    {% for feeditem in feed.items %}
+        {{ feeditem.title }}
+        {{ feeditem.link }}        
+    {% endfor %}
+{% endfor %}

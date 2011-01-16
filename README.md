@@ -1,53 +1,52 @@
+This project is a Rss-to-Email Webapp for Google AppEngine.
+
+Users can add feeds, select digest intervals and will receive emails
+as soon as new items are available in the feed.  
+
+Internals
+=========
+
+Feeds
+-----
+There is one Feed object per user. If multiple users subscribe to the same
+RSS source, it is only crawled once and all user-feeds are updated.
+
 Storing Digest Days
 -------------------
+Currently each Feed has custom digest settings. The backend is also able to
+store multiple digest setting groups per user which can be applied to feeds.  
 
-Digest days are stored in an integer used as bitfield  
-(Mon=1, Tue=2, Wed=4, .., So=64).
+Digest days are stored in an integer attribute 'digest_days' as a bitfield:  
+Mon=1, Tue=2, Wed=4, .., So=64. 0=Instant digest (send mail when new item is 
+available).
 
-Check if the user receives an email on Tuesday: if (digest_days & 2) 
+With the bitfield we can check if the user receives an email on Tuesday like
+this: if (digest_days & 2) 
 
 Crawling Feeds
 --------------
+A cron job runs once every hour:
 
-A cron job runs once every hour.
-
-1. build a list of feeds to crawl (avoiding duplicates)
-
-    feed_urls = getUniqueFeedLinks()
-    
-2. crawl feeds in parallel
-
-    f = feedparser.parse(feed_url)
-    
-    # get all userfeed entries for the fetched feed
-    select * from Feed where link_rss = feed_url
-    
-    # add new items to every user-feeds and set UserPref 
-    foreach feed:
-        feed.addNewItems(f.items)
-        UserPrefs._items_ready = True
+1. build a list of unique feeds to crawl (avoiding duplicates) and put them in 
+   a queue so that every feed is fetched in parallel.
+   
+2. after crawling one feed, update all respective user-feeds, and if new item
+   available for a user, update UserPrefs._items_ready.
 
 Sending Emails
 --------------
+1.  A cron job runs every minute which gets a list of users that have new items
+    and the _digest_next <= now (done in services.CheckSendMail):
 
-1.  A cron job runs every minute which gets a list of users that get a mail
+    ``select * from UserPrefs where _digest_next <= now() and _items_ready = True``
 
-    select * from UserPrefs where _digest_next <= now() and _items_ready
-
-2.  For each user that has update, find feeds to update
-
-    # reset items ready
-    user.userprefs_set._items_ready = False 
+    Put each user into a task-queue to update users in parallel
     
-    # update next scheduled date
-    user.userprefs_set._digest_next = ... 
-    
-    # get feeds with new items
-    select * from Feed where user = user and (digest_days == 0 or _digest_next <= now())
-        and feed.feeditem_set.count() > 0
-
-    # for all items: copy into buffer and delete from db
-
-    # After collecting all items, build email(s) and send
+2.  For each user that has update, find feeds to check for sending mail now
+    * get this user's feeds with new items and _digest_next <= now
+    * for all items: copy into buffer and delete from db
+    * After collecting all items, build email(s) and send
+    * reset user's items ready
+    * update next scheduled digest for user and all feeds
 
         
