@@ -1,8 +1,13 @@
-This project is a Rss-to-Email Webapp for Google AppEngine.
+RSS-to-Email Webapp in Python for Google AppEngine.
 
-Users can add feeds, select digest intervals and will receive emails
-as soon as new items are available in the feed.  
+Users can manage feeds, select digest intervals and will receive emails
+as soon as new items are available in the feed and the next digest interval
+is reached.
 
+License under the [GNU AGPL] [1]
+
+   [1] http://www.gnu.org/licenses/agpl.html 
+    
 Internals
 =========
 

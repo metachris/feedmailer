@@ -124,13 +124,17 @@ class FeedCrawler(webapp.RequestHandler):
         # 
         # convert into datetime object            
         # updated = datetime.datetime(*f.updated[:6])
-        
+
+        now = datetime.datetime.now()
+                
         # Get a list of userfeeds that subscribe to the fetched feed, check for new items
         feeds = db.GqlQuery("SELECT * FROM Feed WHERE link_rss = :1", _feed.link_rss)
         for feed in feeds:
             print "- update feed:", feed
-
-            # Traverse f.entries until we find something in the history. Then add to queue
+            feed.date_last_crawled = now
+            
+            # Traverse f.entries until we find one item in the feed's recent 
+            # history. All items until then are new and added to the queue.
             for i in xrange(len(f.entries)):
                 if f.entries[i].link in feed._recent_items:
                     break
@@ -139,6 +143,7 @@ class FeedCrawler(webapp.RequestHandler):
             print "--", i, "new items"
 
             if i == 0:
+                feed.save() # for feed.date_last_crawled
                 return
                 
             for j in xrange(i):

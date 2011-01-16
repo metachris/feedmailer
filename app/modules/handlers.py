@@ -169,6 +169,11 @@ class Test(webapp.RequestHandler):
         user = users.get_current_user()
         user_prefs = getUserPrefs(user)
 
+        print "x"
         print user
-        print user_prefs
-        print updateUserNextDigest(user, user_prefs)
+        #print user_prefs
+
+        x = updateUserNextDigest(user, user_prefs)
+        print "now: ", datetime.datetime.now()
+        print "next:", x
+        print 

@@ -27,12 +27,14 @@ def calcNextDigestDateTime(digest_days, digest_time, lte_now=False):
                 if (not lte_now and digest_time < time_now) or \
                    (lte_now and digest_time <= time_now):
                     continue
-            else:
-                # soonest date found. end traversing                
-                break
+
+            # soonest date found. end traversing
+            break
     
+    #print i, "days until next digest"
     d = now + datetime.timedelta(days=i)
     next_date = datetime.datetime(d.year, d.month, d.day, digest_time.hour, digest_time.minute)
+    #print "d:", digest_days, digest_time
     #print "next update: %s days from now (weekday=%s)" % (i, day)
     #print next_date         
     return next_date
