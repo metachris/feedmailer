@@ -10,8 +10,9 @@ def calcNextDigestDateTime(digest_days, digest_time):
         return datetime.datetime.now()
     
     # Extract bitfield and find closest update date from now
-    weekday = datetime.datetime.now().weekday() # Mon=0, Sun=6
-    time_now = datetime.datetime.now().time()
+    now = datetime.datetime.now()
+    weekday = now.weekday() # Mon=0, Sun=6
+    time_now = now.time()
     for i in xrange(8):
         day = (i + weekday) % 7
         if digest_days & 1<<day:
@@ -22,7 +23,7 @@ def calcNextDigestDateTime(digest_days, digest_time):
                 # soonest date found. end traversing                
                 break
     
-    d = datetime.datetime.now() + datetime.timedelta(days=i)
+    d = now + datetime.timedelta(days=i)
     next_date = datetime.datetime(d.year, d.month, d.day, digest_time.hour, digest_time.minute)
     #print "next update: %s days from now (weekday=%s)" % (i, day)
     #print next_date         
