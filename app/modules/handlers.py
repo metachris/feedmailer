@@ -7,8 +7,10 @@ from google.appengine.ext.webapp import template
 
 from datetime import time as datetime_time
 
-from models import *
 from lib import feedparser
+
+from models import *
+from tools import *
 
 TEMPLATES_DIR = "../templates/"
 
@@ -66,7 +68,7 @@ class FeedsPage(webapp.RequestHandler):
                 return 
             
             # Check if already in list
-            feed = db.GqlQuery("SELECT * FROM Feed WHERE user = :1 AND link = :2 ORDER BY date_added DESC", user, f.feed.link)
+            feed = db.GqlQuery("SELECT * FROM Feed WHERE user = :1 AND link_web = :2 ORDER BY date_added DESC", user, f.feed.link)
             if feed.count() > 0:
                 self.redirect("/feeds?d=%s" % link)
                 return 
@@ -144,3 +146,13 @@ class FeedDelete(webapp.RequestHandler):
         else:
             path = os.path.join(os.path.dirname(__file__), '%sfeeds_delete.html' % TEMPLATES_DIR)
             self.response.out.write(template.render(path, { 'user': user, 'feed': feed }))        
+
+class Test(webapp.RequestHandler):
+    def get(self):
+        user = users.get_current_user()
+        user_prefs = getUserPrefs(user)
+
+        print user
+        print user_prefs
+                
+        print updateUserNextDigest(user, user_prefs)

@@ -1,5 +1,8 @@
 import datetime
 
+from google.appengine.ext import db
+from google.appengine.api import users
+
 def calcNextDigestDateTime(digest_days, digest_time):
     """Find soonest date in the future matching the days_bitfield and time"""
     if digest_days == 0:
@@ -21,16 +24,39 @@ def calcNextDigestDateTime(digest_days, digest_time):
     
     d = datetime.datetime.now() + datetime.timedelta(days=i)
     next_date = datetime.datetime(d.year, d.month, d.day, digest_time.hour, digest_time.minute)
-    print "next update: %s days from now (weekday=%s)" % (i, day)
-    print next_date         
+    #print "next update: %s days from now (weekday=%s)" % (i, day)
+    #print next_date         
     return next_date
     
-def getUserNextDigestDateTime(user):
+def getUserNextDigestDateTime(user, updateFeedDigestNext=False):
+    """Returns the users soonest next email check as datetime object
+    
+    if updateFeedDigestNext is set to True, all feeds will update and save 
+    their next scheduled digest_next datetime object
+    """
     feeds = db.GqlQuery("SELECT * FROM Feed WHERE user = :1", user)
     
     # Traverse all Feeds and find soonest date in the future
     next_min = None
     for feed in feeds:
         next_tmp = calcNextDigestDateTime(feed.digest_days, feed.digest_time)
-        if next_tmp < next_min:
+        if not next_min or next_tmp < next_min:
             next_min = next_tmp
+        if updateFeedDigestNext:
+            feed._digest_next = next_tmp
+            feed.save()
+    
+    return next_min
+    
+def updateUserNextDigest(user, prefs):
+    """Updates _digest_next on user and on all its feeds. Triggered at:
+    - feed update
+    - interval settings update
+    - send mail
+    """
+    next = getUserNextDigestDateTime(user, True) # True = update all Feeds for next schedule
+    prefs._digest_next = next
+    prefs.save()
+    
+    print datetime.datetime.now()
+    return next

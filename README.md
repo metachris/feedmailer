@@ -1,5 +1,13 @@
+Storing Digest Days
+-------------------
+
+Digest days are stored in an integer used as bitfield  
+(Mon=1, Tue=2, Wed=4, .., So=64).
+
+Check if the user receives an email on Tuesday: if (digest_days & 2) 
+
 Crawling Feeds
--------------- 
+--------------
 
 A cron job runs once every hour.
 
