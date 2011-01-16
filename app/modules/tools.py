@@ -54,7 +54,7 @@ def updateUserNextDigest(user, prefs):
     - adding feed
     - feed custom interval update
     - global interval settings update (not yet impl.)
-    - reaching next scheduled digest (maybe sending mail)
+    - triggered next scheduled digest
     """
     next = getUserNextDigestDateTime(user, True) # True = update all Feeds for next schedule
     prefs._digest_next = next

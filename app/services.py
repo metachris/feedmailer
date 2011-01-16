@@ -21,9 +21,25 @@ from lib import feedparser
 class CheckSendMail(webapp.RequestHandler):
     def get(self):
         """Run by cron job every minute"""
-        users = db.GqlQuery("SELECT * FROM UserPrefs WHERE _digest_next <= :1 AND _items_ready = false", datetime.datetime.now())
-        for user in users:
-            print user        
+        print "x"
+        userprefs = db.GqlQuery("SELECT * FROM UserPrefs WHERE _digest_next <= :1 AND _items_ready = True", datetime.datetime.now())
+        for prefs in userprefs:
+            taskqueue.add(url='/services/sendmail_worker/%s' % prefs.key())
+            print prefs, prefs.key(), "dispatched"
+
+class SendMailWorker(webapp.RequestHandler):
+    """Triggered by last minutes check. Items ready to be sent and _digest_next <= now.
+    
+    - Compile Email
+    - Send Email
+    - Update _digest_next on user
+    
+    Args: key = UserPrefs key of this user
+    """
+    def get(self, key):
+        user_prefs = UserPrefs.get(key)
+        if not user_prefs:
+            return
 
 class InitFeedCrawler(webapp.RequestHandler):
     def get(self):
@@ -40,7 +56,7 @@ class InitFeedCrawler(webapp.RequestHandler):
             
         # 2. dispatch to crawlers
         for key in feeds_keys:
-            #taskqueue.add(url='/services/crawl_feed_worker/%s' % key)            
+            taskqueue.add(url='/services/crawl_feed_worker/%s' % key)            
             print key, "dispatched"
 
 class FeedCrawler(webapp.RequestHandler):
@@ -83,6 +99,10 @@ class FeedCrawler(webapp.RequestHandler):
             
             # i now contains the number of leading entries that are unknown to this user
             print "--", i, "new items"
+
+            if i == 0:
+                return
+                
             for j in xrange(i):
                 # instead of starting 0..3 we revert the sequence and start from 3 .. 0
                 pos = i - j - 1
@@ -100,9 +120,15 @@ class FeedCrawler(webapp.RequestHandler):
                     
                 print "recent items:", feed.__recent_items
                 
+            prefs = getUserPrefs(feed.user)
+            prefs._items_ready = True
+            prefs.save()
+            
 urls = [
-    ('/services/check_sendmail', CheckSendMail),
-    ('/services/crawl_feeds', InitFeedCrawler),
+    (r'/services/check_sendmail', CheckSendMail),
+    (r'/services/sendmail_worker/([-\w]+)', SendMailWorker),
+
+    (r'/services/crawl_feeds', InitFeedCrawler),
     (r'/services/crawl_feed_worker/([-\w]+)', FeedCrawler),
 ]
 

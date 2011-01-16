@@ -20,7 +20,7 @@ class UserPrefs(db.Model):
     # ~ user.feeditem_set.count() > 0
     _items_ready = db.BooleanProperty(default=False)
     
-    # Next scheduled email sending
+    # Next scheduled email sending. see tools.updateUserNextDigest 
     _digest_next = db.DateTimeProperty(default=datetime.datetime.now())
     
 def getUserPrefs(user):
@@ -72,9 +72,7 @@ class Feed(db.Model):
     digest_days = db.IntegerProperty(default=0) 
     digest_time = db.TimeProperty(default=datetime.time(12, 0))
 
-    # last email and when next is scheduled. updated with either
-    # 1. digest interval update by user on web
-    # 2. when next email was sent by system  
+    # Next scheduled email sending. see tools.updateUserNextDigest
     _digest_next = db.DateTimeProperty(default=datetime.datetime.now())
 
     # A list of 10 recent item links for feed crawler to know which items
