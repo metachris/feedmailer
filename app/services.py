@@ -32,7 +32,7 @@ class CheckSendMail(webapp.RequestHandler):
         print "x"
         userprefs = db.GqlQuery("SELECT * FROM UserPrefs WHERE _digest_next <= :1 AND _items_ready = True", datetime.datetime.now())
         for prefs in userprefs:
-            #taskqueue.add(url='/services/sendmail_worker/%s' % prefs.key())
+            taskqueue.add(url='/services/sendmail_worker/%s' % prefs.key())
             print prefs, prefs.key(), "dispatched"
 
 class SendMailWorker(webapp.RequestHandler):
@@ -106,7 +106,7 @@ class InitFeedCrawler(webapp.RequestHandler):
             
         # 2. dispatch to crawlers
         for key in feeds_keys:
-            #taskqueue.add(url='/services/crawl_feed_worker/%s' % key)            
+            taskqueue.add(url='/services/crawl_feed_worker/%s' % key)            
             print key, "dispatched"
 
 class FeedCrawler(webapp.RequestHandler):

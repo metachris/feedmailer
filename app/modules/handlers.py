@@ -47,7 +47,6 @@ class FeedsPage(webapp.RequestHandler):
 
         template_values = {
             'user': user,
-            'username': user.nickname(), 
             'url': url,
             'url_linktext': url_linktext,
             'feeds': feeds,

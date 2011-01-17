@@ -17,6 +17,13 @@ indexes:
 
 - kind: Feed
   properties:
+  - name: link_web
+  - name: user
+  - name: date_added
+    direction: desc
+
+- kind: Feed
+  properties:
   - name: user
   - name: date
     direction: desc
@@ -26,3 +33,8 @@ indexes:
   - name: user
   - name: date_added
     direction: desc
+
+- kind: UserPrefs
+  properties:
+  - name: _items_ready
+  - name: _digest_next
