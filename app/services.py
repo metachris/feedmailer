@@ -63,7 +63,7 @@ class SendMailWorker(webapp.RequestHandler):
         print feeds
         
         # save that this users currently ready items are already handled        
-        user_prefs._item_ready = False
+        user_prefs._items_ready = False
         
         # update user's and feeds _digest_next. lte_now excludes now and
         # always sets _digest_next in the future. Also updates all feeds
