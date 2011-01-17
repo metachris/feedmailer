@@ -68,7 +68,9 @@ class FeedsPage(webapp.RequestHandler):
             'url_linktext': url_linktext,
             'feeds': feeds,
         }
-                                    
+        
+        webapp.template.register_template_library('common.templatefilters')
+        
         path = os.path.join(os.path.dirname(__file__), '%sfeeds.html' % TEMPLATES_DIR)
         self.response.out.write(template.render(path, template_values))        
 

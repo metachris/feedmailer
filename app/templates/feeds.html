@@ -6,7 +6,7 @@
         {% for feed in feeds %}
           <tr class="{% cycle even,odd %}">
             <td><a href="/feeds/update/{{ feed.key }}">{{ feed.title }}</a></td>
-            <td>{% ifequal feed.digest_days 0 %}Instant{% else %}{{ feed.digest_time|time }}, {{ feed.digest_days }}{% endifequal %}</td>
+            <td>{% ifequal feed.digest_days 0 %}Instant{% else %}{{ feed.digest_time|time }}&nbsp; <small>[{{ feed.digest_days|days_bitfield_humanize }}]</small>{% endifequal %}</td>
             <td>
                 &nbsp;<small><a href="/feeds/update/{{ feed.key }}"><img src="/static/icons/email_edit.png" /></a>
                 &nbsp;&nbsp;&nbsp;<small><a href="{{ feed.link_web }}"><img src="/static/icons/page_world.png" /></a>
