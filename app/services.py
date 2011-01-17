@@ -85,15 +85,16 @@ class SendMailWorker(webapp.RequestHandler):
             print email_body
             
             # Increment email sent counter on feeds
-            for feed in feeds:
-                feed.emails_sent += 1
-                feed.save()
+            for _feed in feeds:
+                #print _feed
+                _feed["feed"].emails_sent += 1
+                _feed["feed"].save()
                 
             # compose subject line
             subject = "Feed digest of"
             for i in xrange(len(feeds)):
                 if i < 2:
-                    subject += " %s," % feeds[i].title
+                    subject += " %s," % feeds[i]["feed"].title
                 else:
                     subject += " and %s others" % (len(feeds) - 2)
                     break
