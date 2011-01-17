@@ -7,10 +7,12 @@ from tools import calcNextDigestDateTime
 
 class UserPrefs(db.Model):
     user = db.UserProperty(required=True)
-    
+    email = db.StringProperty(required=True)
+        
     date_joined = db.DateTimeProperty(auto_now_add=True)    
     date_lastlogin = db.DateTimeProperty(auto_now_add=True)    
     emails_received = db.IntegerProperty(default=0)
+    emails_last = db.DateTimeProperty()    
 
     # If true, all feeds will be combined into one digest,
     # if false every feed is delivered in a separate email.
@@ -29,7 +31,7 @@ def getUserPrefs(user):
         q = db.GqlQuery("SELECT * FROM UserPrefs WHERE user = :1", user)
         prefs = q.get()
         if not prefs:
-            prefs = UserPrefs(user=user)
+            prefs = UserPrefs(user=user, email=user.email())
             prefs.put()
         return prefs
 

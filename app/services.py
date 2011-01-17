@@ -16,6 +16,8 @@ from google.appengine.ext import webapp
 from google.appengine.api import taskqueue
 from google.appengine.ext.webapp.util import run_wsgi_app
 
+from google.appengine.api import mail
+
 from lib import feedparser
 
 from modules.models import *
@@ -78,6 +80,16 @@ class SendMailWorker(webapp.RequestHandler):
             path = os.path.join(os.path.dirname(__file__), '%semail_feedupdate.html' % TEMPLATES_DIR)
             email_body = template.render(path, template_values)        
             print email_body
+            
+            mail.send_mail(sender="digest@feedserf.com",
+                to=user_prefs.email,
+                subject="Feedserf Digest",
+                body=email_body
+            )
+            
+            user_prefs.emails_received += 1
+            user_prefs.emails_last = datetime.datetime.now()
+            user_prefs.save()
             
 class InitFeedCrawler(webapp.RequestHandler):
     def get(self):

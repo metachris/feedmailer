@@ -177,3 +177,7 @@ class Test(webapp.RequestHandler):
         print "now: ", datetime.datetime.now()
         print "next:", x
         print 
+        print dir(user)
+        print user.email()
+        print
+        
