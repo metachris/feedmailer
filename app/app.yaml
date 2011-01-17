@@ -7,8 +7,8 @@ builtins:
 - datastore_admin: on
 
 handlers:
-- url: /stylesheets
-  static_dir: stylesheets
+- url: /static
+  static_dir: static
 
 - url: /feeds.*
   script: main.py

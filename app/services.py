@@ -84,11 +84,7 @@ class SendMailWorker(webapp.RequestHandler):
             email_body = template.render(path, template_values)        
             print email_body
             
-            mail.send_mail(sender="digest@feedserf.com",
-                to=user_prefs.email,
-                subject="Feedserf Digest",
-                body=email_body
-            )
+            mail.send_mail(sender="digest@feedserf.com", to=user_prefs.email, subject="Feedserf Digest", body=email_body)
             
             user_prefs.emails_received += 1
             user_prefs.emails_last = datetime.datetime.now()
