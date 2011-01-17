@@ -4,9 +4,7 @@ Website: [http://www.feedserf.com] [1]
 
 Users can manage feeds, select digest intervals and will receive emails
 as soon as new items are available in the feed and the next digest interval
-is reached.
-
-License under the [GNU AGPL] [2]
+is reached. License: [GNU AGPL] [2]
 
   [1]: http://www.feedserf.com
   [2]: http://www.gnu.org/licenses/agpl.html 
