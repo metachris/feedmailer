@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% block content %}    
-    <div style="height:20px;">
-        <h3>{{ feeds.count }} followed feeds</h3>
-    </div>
-<br>
+        <h3>My Feeds</h3>
+    <div style="float:left; margin-top:14px;">
     <table border="0" class="aimg" id="feedlist">
         {% for feed in feeds %}
           <tr class="{% cycle even,odd %}">
@@ -17,14 +15,12 @@
           </tr>
         {% endfor %}
         
-        <tr><td colspan="10" style="text-align:center;">    
+    </table>
         <div id="addfeed_main">
             <form action="/feeds" method="post">
-                <font style="color:#666;">New feed:</font> <input type="text" name="uri" style="border:1px solid lightgray; height:18px; margin:0px; padding:0px; font-size:12px;" /> 
+                <font style="color:#444;">Add a feed:</font> <input type="text" name="uri" style="border:1px solid lightgray; height:18px; margin:0px; padding:0px; font-size:12px;" /> 
                 <input type="submit" style=" height:17px; width:30px; margin:0px; padding:0px; font-size:10px;" value="add" />
             </form>        
             </div>
-        </td></tr>    
-    </table>
-
+    </div>
 {% endblock %}

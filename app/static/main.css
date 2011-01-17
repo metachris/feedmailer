@@ -3,6 +3,10 @@ h2 {
     margin-bottom:20px; 
 }
 
+h3 {
+    font-size:16px;
+}
+
 body {
   font-family: Verdana, Helvetica, sans-serif;
   background-color: #fff;
@@ -56,7 +60,7 @@ small { font-size:11px; }
 #content {
     font-size:14px;
     margin-top:20px;
-    padding:0px 30px;
+    padding:0px 20px;
 }
 
 #footer {
@@ -70,5 +74,10 @@ small { font-size:11px; }
 
 /* Specific Styles */
 #addfeed_main {
-    margin-top:40px;   
+    margin-top:40px;
+    text-align:center;   
+}
+
+#feedlist {
+    border:1px solid lightgray;
 }
