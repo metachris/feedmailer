@@ -1,13 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <h3>Hello, {{ user.email }}</h3>
-    
-    <a href="/feeds">< back</a>
+    <h3>Feed Settings</h3>
 
     <hr>
-
-    <h3>Feed Settings</h3>
     
     <table border="0">
     <tr><td valign="top">
@@ -16,7 +12,7 @@
       <tr><td>Feed:</td><td><a href="{{ feed.link_rss }}">{{ feed.title }}</a></td></tr>
       <tr><td>Date added:</td><td>{{ feed.date_added|date }}</td></tr>
       <tr><td>Last crawled:</td><td>{{ feed.date_last_crawled.date|date }}, {{ feed.date_last_crawled.time|time }} </td></tr>
-      <tr><td>New items:</td><td>{{ feed.feeditemnew_set.count }}</td></tr>
+      <tr><td>New items:</td><td>{% if feed.feeditemnew_set.count %}{{ feed.feeditemnew_set.count }}{% else %}0{% endif %}</td></tr>
     </table>
 
     <br><br>
@@ -47,8 +43,9 @@
 
     </form>
 
+    <br>
     
-    <p style="max-width:500px">Feeds are crawled once every hour. If digest is set to "instant" the email
+    <p style="max-width:300px; font-size:12px;">Feeds are crawled once every hour. If digest is set to "instant" the email
     will be sent immediately. Else all new entries will be sent in the next scheduled
     digest.
     </p>

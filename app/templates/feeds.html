@@ -1,22 +1,6 @@
 {% extends "base.html" %}
-{% block content %}
-    <h3>Hello, {{ user.email }}</h3>
-    
-    <a href="{{ url }}">{{ url_linktext }}</a>
-
-    <hr>
-    
-    <p>
-    
-    <form action="/feeds" method="post">
-        Add a feed: <input type="text" name="uri" /> <input type="submit" />
-    </form>
-    </p>
-    
-    <hr>
-
-
-    
+{% block content %}    
+<br>        
     <table border="0">
         <tr><th>Feed</th><th>Date added</th><th>Last Crawled</th><th>New Entries</th><th>Digest</th></tr>
         {% for feed in feeds %}

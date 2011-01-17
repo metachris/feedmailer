@@ -7,11 +7,13 @@ from modules.models import *
 from modules.handlers import *
 
 urls = [
-    ('/', MainPage),
-    ('/feeds', FeedsPage),
+    (r'/', MainPage),
+    (r'/feeds', FeedsPage),
     (r'/feeds/update/(.*)', FeedSettings),
     (r'/feeds/delete/(.*)', FeedDelete),
-    ('/test', Test),
+    (r'/signin', SignIn),
+    (r'/signout', SignOut),
+    (r'/test', Test),
 ]
 
 application = webapp.WSGIApplication(urls, debug=True)

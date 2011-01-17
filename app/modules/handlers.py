@@ -14,6 +14,18 @@ from tools import *
 
 TEMPLATES_DIR = "../templates/"
 
+class SignIn(webapp.RequestHandler):
+    def get(self):
+        user = users.get_current_user() 
+        url = users.create_login_url("/")
+        self.redirect(url)
+
+class SignOut(webapp.RequestHandler):
+    def get(self):
+        user = users.get_current_user() 
+        url = users.create_logout_url("/")
+        self.redirect(url)
+
 class MainPage(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user() 
@@ -62,6 +74,10 @@ class FeedsPage(webapp.RequestHandler):
         if link and len(link) > 0:
             f = feedparser.parse(link)
 
+            #if not f.status == 200:
+            #    self.redirect("/feeds?s=%s&i=%s" % (f.status, link))
+            #    return 
+
             # Check for valid feed            
             if not f.feed.has_key("title"):
                 self.redirect("/feeds?i=%s" % link)
@@ -89,8 +105,13 @@ class FeedsPage(webapp.RequestHandler):
             # Update User and Feed for _digest_next datetime 
             updateUserNextDigest(user, getUserPrefs(user))
                 
-        self.redirect("/feeds/update/%s" % feed.key())
-        return 
+            self.redirect("/feeds/update/%s" % feed.key())
+            return
+
+        else:
+            self.redirect("/feeds?i=0")
+            return 
+             
 
 
 class FeedSettings(webapp.RequestHandler):

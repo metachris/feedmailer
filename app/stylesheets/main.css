@@ -1,6 +1,37 @@
 body {
   font-family: Verdana, Helvetica, sans-serif;
-  background-color: #EFEFEF;
+  background-color: #fff;
+  max-width:800px;
+  margin:auto;
 }
 
-td, tr { padding: 1px 10px; }
+td, tr, th { padding: 1px 10px; text-align:left; }
+
+#header {
+    padding:10px 0px;   
+}
+
+#header #logo {
+    float:left;
+    font-size:18px;
+}
+
+#header #topnav {
+    text-align:right;
+    font-size:12px;
+}
+
+#nav {
+    border-top:1px solid #36C;
+    background:#E5ECF9;
+    font-size:12px;
+    padding:4px 10px;
+    margin-top:6px;
+    margin-bottom:10px;   
+}
+
+#content {
+    font-size:14px;
+    margin-top:20px;
+    padding:0px 20px;
+}

@@ -1,10 +1,39 @@
 <html>
     <head>
-        <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />    
-    </head>
+        <link type="text/css" rel="stylesheet" href="/stylesheets/reset.css" />
+        <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+<!--        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>    
+-->    </head>
     
     <body>
-    {% block content %}
-    {% endblock %}
+        <div id="header">
+            <div id="logo">
+                Feedserf.com
+            </div>
+            <div id="topnav">
+                {% if user %}
+                    <b>{{ user.email }}</b> &nbsp;|&nbsp; <!--<a href="/account">My Account</a> &nbsp;|&nbsp; --><a href="/help">Help</a> &nbsp;|&nbsp; <a href="/signout">Sign out</a>
+                {% else %}
+                    <a href="/help">Help</a> &nbsp;|&nbsp; <a href="/signin">Sign in</a>                
+                {% endif %}
+            </div>
+        </div> 
+
+        {% if user %}
+        <div id="nav">
+            <div style="float:left; padding-top:2px;"><a href="/feeds">Feeds</a></div>
+            <div style="text-align:right; font-size:11px;">
+                <form action="/feeds" method="post">
+                    New feed: <input type="text" name="uri" style="border:1px solid lightgray; height:18px; margin:0px; padding:0px; font-size:12px;" /> 
+                    <input type="submit" style=" height:17px; width:30px; margin:0px; padding:0px; font-size:10px;" value="add" />
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
     </body>
 </html>
