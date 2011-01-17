@@ -10,3 +10,5 @@ Backend
   link and title-hash to _recent_items
   
 * User timezone setup. Currently all specified times are UTC (server time)
+
+* Email verification

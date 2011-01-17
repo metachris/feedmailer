@@ -138,26 +138,36 @@ class FeedSettings(webapp.RequestHandler):
     def post(self, key):
         user = users.get_current_user()
 
-        feeds = db.GqlQuery("SELECT * FROM Feed WHERE __key__ = :1 AND user = :2", db.Key(key), user)
-        feed = feeds.fetch(1)[0]
-
+        #feeds = db.GqlQuery("SELECT * FROM Feed WHERE __key__ = :1 AND user = :2", db.Key(key), user)
+        #feed = feeds.fetch(1)[0]
+        feed = Feed.get(key)
+        
         dt = self.request.get("dt")
         if dt and dt.index(":") > -1:
             hr, min = dt.split(":")
             feed.digest_time = datetime_time(int(hr), int(min))
                 
-        if self.request.get("d-"):
+        digest_type = self.request.get("d")
+        if digest_type == "i":
             # instant digest
+            feed.last_custom_digest_days = feed.digest_days
             feed.digest_days = 0
 
-        else:
+        elif digest_type == "c":
             days_bitfield = 0
             d = ["d0", "d1", "d2", "d3", "d4", "d5", "d6"]
             for i in xrange(len(d)):
                 if self.request.get(d[i]): 
                     days_bitfield |= 1 << i
+            if days_bitfield == 0:
+                # user could have switched back from instant. restore settings
+                days_bitfield = feed.last_custom_digest_days
             feed.digest_days = days_bitfield
-            
+
+        else:
+            print "xxx"
+            return
+                        
         feed.save()
 
         # Update User and Feed for _digest_next datetime 

@@ -9,7 +9,7 @@ from modules.handlers import *
 urls = [
     (r'/', MainPage),
     (r'/feeds', FeedsPage),
-    (r'/feeds/update/(.*)', FeedSettings),
+    (r'/feeds/update/([-\w]+)', FeedSettings),
     (r'/feeds/delete/(.*)', FeedDelete),
     (r'/signin', SignIn),
     (r'/signout', SignOut),

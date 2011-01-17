@@ -74,6 +74,9 @@ class Feed(db.Model):
     digest_days = db.IntegerProperty(default=0) 
     digest_time = db.TimeProperty(default=datetime.time(12, 0))
 
+    # if user switches to instant and back, restore previous settings
+    last_custom_digest_days = db.IntegerProperty(default=127)
+    
     # Next scheduled email sending. see tools.updateUserNextDigest
     _digest_next = db.DateTimeProperty(default=datetime.datetime.now())
 

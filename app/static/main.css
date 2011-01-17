@@ -7,6 +7,10 @@ body {
 
 td, tr, th { padding: 1px 10px; text-align:left; }
 
+p { margin-bottom:8px; }
+
+small { font-size:11px; }
+
 #header {
     padding:10px 0px;   
 }

@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
+<script type="text/javascript">
+    function checkDays() {
+        for (var i=0; i<7; i++)
+            document.getElementById("d" + i).checked = true;
+    }
+</script>
 
-    <h3>Feed Settings</h3>
+    <div style="float:left;"><h3>Feed Settings</h3></div>
+    <div style="text-align:right;">    <form action="/feeds/delete/{{ feed.key }}" method="post">
+        <input type="submit" value="Remove Feed" style="border:1px solid white; background:white;"/>
+    </form>      
+</div>
 
     <hr>
+
+    <form action="/feeds/update/{{ feed.key }}" method="post">
     
     <table border="0">
     <tr><td valign="top">
@@ -13,21 +25,23 @@
       <tr><td>Date added:</td><td>{{ feed.date_added|date }}</td></tr>
       <tr><td>Last crawled:</td><td>{{ feed.date_last_crawled.date|date }}, {{ feed.date_last_crawled.time|time }} </td></tr>
       <tr><td>New items:</td><td>{% if feed.feeditemnew_set.count %}{{ feed.feeditemnew_set.count }}{% else %}0{% endif %}</td></tr>
+      <tr><td>Digest:</td><td>
+          <select name="d" size="0" onChange="javascript:digestChange()">
+              <option value="i" label="Instant" {% ifequal feed.digest_days 0 %}selected=selected{% endifequal %}>Instant</option>
+              <option value="c" label="Custom" {% if feed.digest_days %}selected=selected{% endif %}>Custom</option>
+          </select>
+    </td></tr>
+    <tr><td><br><input type="submit" value="Update" /></td></tr>
+      
     </table>
 
-    <br><br>
-    <form action="/feeds/delete/{{ feed.key }}" method="post">
-        <input type="submit" value="Remove Feed" />
-    </form>      
-
     </td><td style="width:40px;">&nbsp;</td><td valign="top">
-    
-    <h3>Digest: {{ feed.digest_days }}</h3>
-    <form action="/feeds/update/{{ feed.key }}" method="post">
+        <div id="digest_custom" {% ifequal feed.digest_days 0 %}style="display:none;"{% endifequal %}>
         <table border="0">
-            <tr><td><label for="d-">Instant</label></td><td><input type="checkbox" name="d-" id="d-" {% ifequal feed.digest_days 0 %}checked=checked{% endifequal %} /></td></tr>
 
-            <tr><td>&nbsp;</td></tr>
+            <tr><td colspan="2" style=""><b>Custom digest settings<br>&nbsp;</b></td></tr>
+            <tr><td>Time</td><td><input type="text" name="dt" size="6" value="{{ feed.digest_time|time:"H:i" }}" style="margin-left:4px; border:1px solid lightgray; height:18px; padding:1px; font-size:12px;" /></td></tr>
+            <tr><td><small><br><a href="javascript:checkDays()">All Days</a></small></td></tr>
 
             <tr><td><label for="d0">Monday</label></td>   <td><input type="checkbox" name="d0" id="d0" {% if days.0 %}checked=checked{% endif %} /></td></tr>
             <tr><td><label for="d1">Tuesday</label></td>  <td><input type="checkbox" name="d1" id="d1" {% if days.1 %}checked=checked{% endif %} /></td></tr>
@@ -36,19 +50,21 @@
             <tr><td><label for="d4">Friday</label></td>   <td><input type="checkbox" name="d4" id="d4" {% if days.4 %}checked=checked{% endif %} /></td></tr>
             <tr><td><label for="d5">Saturday</label></td> <td><input type="checkbox" name="d5" id="d5" {% if days.5 %}checked=checked{% endif %} /></td></tr>            
             <tr><td><label for="d6">Sunday</label></td>   <td><input type="checkbox" name="d6" id="d6" {% if days.6 %}checked=checked{% endif %} /></td></tr>            
-            <tr><td>Time (hh:mm):</td><td><input type="text" name="dt" size="6" value="{{ feed.digest_time|time:"H:i" }}" /></td></tr>
             
-            <tr><td><br><input type="submit" value="Update" /></td></tr>
         </table>    
-
-    </form>
-
-    <br>
     
-    <p style="max-width:300px; font-size:12px;">Feeds are crawled once every hour. If digest is set to "instant" the email
-    will be sent immediately. Else all new entries will be sent in the next scheduled
-    digest.
-    </p>
+        <br>
+        
+        <p style="max-width:300px; font-size:12px;">Feeds are crawled once every hour. If digest is set to "instant" the email
+        will be sent immediately. Else all new entries will be sent in the next scheduled
+        digest.
+        </p>
+
+        </div>
+
     </td></tr>
     </table>
+
+    </form>
+    
 {% endblock %}
