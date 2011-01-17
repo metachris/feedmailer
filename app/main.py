@@ -13,6 +13,7 @@ urls = [
     (r'/feeds/delete/(.*)', FeedDelete),
     (r'/signin', SignIn),
     (r'/signout', SignOut),
+    (r'/help', Help),
     (r'/test', Test),
 ]
 

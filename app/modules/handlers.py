@@ -26,6 +26,11 @@ class SignOut(webapp.RequestHandler):
         url = users.create_logout_url("/")
         self.redirect(url)
 
+class Help(webapp.RequestHandler):
+    def get(self):
+        path = os.path.join(os.path.dirname(__file__), '%shelp.html' % TEMPLATES_DIR)
+        self.response.out.write(template.render(path, None))        
+
 class MainPage(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user() 
@@ -43,7 +48,7 @@ class MainPage(webapp.RequestHandler):
             'url_linktext': url_linktext,
         }
 
-        path = os.path.join(os.path.dirname(__file__), '../templates/index.html')
+        path = os.path.join(os.path.dirname(__file__), '%sindex.html' % TEMPLATES_DIR)
         self.response.out.write(template.render(path, template_values))        
 
 class FeedsPage(webapp.RequestHandler):
