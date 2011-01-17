@@ -1,6 +1,5 @@
-<html>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  <body>
+{% extends "base.html" %}
+{% block content %}
     <h3>Hello, {{ user.email }}</h3>
     
     <a href="{{ url }}">{{ url_linktext }}</a>
@@ -32,5 +31,4 @@
         {% endfor %}    
     </table>
 
-  </body>
-</html>
+{% endblock %}

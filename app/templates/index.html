@@ -1,9 +1,8 @@
-<html>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  <body>
+{% extends "base.html" %}
+{% block content %}
+
     {{ greeting }}
     
     <a href="{{ url }}">{{ url_linktext }}</a>
 
-  </body>
-</html>
+{% endblock %}
