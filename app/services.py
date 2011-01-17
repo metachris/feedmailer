@@ -44,6 +44,9 @@ class SendMailWorker(webapp.RequestHandler):
     
     Args: key = UserPrefs key of this user
     """
+    def post(self, key):
+        return self.get(key)
+    
     def get(self, key):
         user_prefs = UserPrefs.get(key)
         if not user_prefs:
@@ -118,6 +121,9 @@ class FeedCrawler(webapp.RequestHandler):
     and if available, FeedItem objects are created which will be used by next
     scheduled sendmail check.
     """
+    def post(self, key):
+        return self.get(key)
+
     def get(self, key):
         print "x"
         _feed = Feed.get(key)
