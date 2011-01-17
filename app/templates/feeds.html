@@ -1,18 +1,30 @@
 {% extends "base.html" %}
 {% block content %}    
-<br>        
-    <table border="0">
-        <tr><th>Feed</th><th>Date added</th><th>Last Crawled</th><th>New Entries</th><th>Digest</th></tr>
+    <div style="height:20px;">
+        <h3>{{ feeds.count }} followed feeds</h3>
+    </div>
+<br>
+    <table border="0" class="aimg" id="feedlist">
         {% for feed in feeds %}
-          <tr>
+          <tr class="{% cycle even,odd %}">
             <td><a href="/feeds/update/{{ feed.key }}">{{ feed.title }}</a></td>
-            <td>{{ feed.date_added|date }}</td>
-            <td>{{ feed.date_last_crawled|date }}, {{ feed.date_last_crawled|time }}</td>
-            <td>{{ feed.feeditemnew_set.count }}</td>
             <td>{% ifequal feed.digest_days 0 %}Instant{% else %}{{ feed.digest_time|time }}, {{ feed.digest_days }}{% endifequal %}</td>
-            <td><small><a href="{{ feed.link_rss }}">link</a></td>
+            <td>
+                &nbsp;<small><a href="/feeds/update/{{ feed.key }}"><img src="/static/icons/email_edit.png" /></a>
+                &nbsp;&nbsp;&nbsp;<small><a href="{{ feed.link_web }}"><img src="/static/icons/page_world.png" /></a>
+                &nbsp;&nbsp;&nbsp;<small><a href="{{ feed.link_rss }}"><img src="/static/icons/feed.png" /></a>
+            </td>
           </tr>
-        {% endfor %}    
+        {% endfor %}
+        
+        <tr><td colspan="10" style="text-align:center;">    
+        <div id="addfeed_main">
+            <form action="/feeds" method="post">
+                <font style="color:#666;">New feed:</font> <input type="text" name="uri" style="border:1px solid lightgray; height:18px; margin:0px; padding:0px; font-size:12px;" /> 
+                <input type="submit" style=" height:17px; width:30px; margin:0px; padding:0px; font-size:10px;" value="add" />
+            </form>        
+            </div>
+        </td></tr>    
     </table>
 
 {% endblock %}

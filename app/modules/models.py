@@ -63,6 +63,7 @@ class Feed(db.Model):
     
     date_added = db.DateProperty(auto_now_add=True)
     date_last_crawled = db.DateTimeProperty(auto_now_add=True)
+    emails_sent = db.IntegerProperty(default=0)
     
     # digest timing can either be a group or a custom setting.
     # if digest_group == None: use custom settings, 

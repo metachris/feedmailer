@@ -84,6 +84,11 @@ class SendMailWorker(webapp.RequestHandler):
             email_body = template.render(path, template_values)        
             print email_body
             
+            # Increment email sent counter on feeds
+            for feed in feeds:
+                feed.emails_sent += 1
+                feed.save()
+                
             # compose subject line
             subject = "Feed digest of"
             for i in xrange(len(feeds)):

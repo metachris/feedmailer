@@ -7,11 +7,14 @@
     }
 </script>
 
-    <div style="float:left;"><h3>Feed Settings</h3></div>
-    <div style="text-align:right;">    <form action="/feeds/delete/{{ feed.key }}" method="post">
-        <input type="submit" value="Remove Feed" style="border:1px solid white; background:white;"/>
-    </form>      
-</div>
+    <div style="height:20px;">
+        <div style="float:left;"><h3>Feed Settings</h3></div>
+        <div style="text-align:right;">    
+            <form action="/feeds/delete/{{ feed.key }}" method="post">
+                <input type="submit" value="Remove Feed" style="border:1px solid white; background:white;"/>
+            </form>      
+        </div>
+    </div>
 
     <hr>
 
@@ -52,13 +55,6 @@
             <tr><td><label for="d6">Sunday</label></td>   <td><input type="checkbox" name="d6" id="d6" {% if days.6 %}checked=checked{% endif %} /></td></tr>            
             
         </table>    
-    
-        <br>
-        
-        <p style="max-width:300px; font-size:12px;">Feeds are crawled once every hour. If digest is set to "instant" the email
-        will be sent immediately. Else all new entries will be sent in the next scheduled
-        digest.
-        </p>
 
         </div>
 
