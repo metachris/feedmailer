@@ -29,7 +29,8 @@ class SignOut(webapp.RequestHandler):
 class Help(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), '%shelp.html' % TEMPLATES_DIR)
-        self.response.out.write(template.render(path, None))        
+        user = users.get_current_user()
+        self.response.out.write(template.render(path, {'user':user}))        
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -69,8 +70,8 @@ class FeedsPage(webapp.RequestHandler):
             'feeds': feeds,
         }
         
-        webapp.template.register_template_library('common.templatefilters')
-        
+        webapp.template.register_template_library('common.templateaddons')
+                
         path = os.path.join(os.path.dirname(__file__), '%sfeeds.html' % TEMPLATES_DIR)
         self.response.out.write(template.render(path, template_values))        
 

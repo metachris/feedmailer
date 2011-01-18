@@ -1,5 +1,5 @@
-# import the webapp module
 from google.appengine.ext import webapp
+from django.template import Node 
 
 # get registry, we need it to register our filter later.
 register = webapp.template.create_template_register()
@@ -14,4 +14,17 @@ def days_bitfield_humanize(days_bitfield):
     return o.strip().strip(",")
     
 register.filter(days_bitfield_humanize)
-    
+
+class ResetCycleNode(Node): 
+    def __init__(self, cyclenodes): 
+        self.cyclenodes = cyclenodes 
+    def render(self, context): 
+        for c in self.cyclenodes.values(): 
+            c.counter = -1 
+        return '' 
+
+@register.tag 
+def resetcycle(parser, token): 
+    # if you need tag error checking have a look at the Django 
+    #defaulttag.py file on how to do it 
+    return ResetCycleNode(getattr(parser,'_namedCycleNodes',{}))     
