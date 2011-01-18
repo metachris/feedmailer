@@ -1,7 +1,7 @@
 cron:
 - description: hourly feed update
   url: /services/crawl_feeds
-  schedule: every 20 minutes synchronized
+  schedule: every 1 hours synchronized
   
 - description: check to send emails
   url: /services/check_sendmail

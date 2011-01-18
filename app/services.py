@@ -105,7 +105,7 @@ class SendMailWorker(webapp.RequestHandler):
             subject.strip(",")
             
             message = mail.EmailMessage()
-            message.sender = "Feedserv Digest <digest@feedserf.com>"
+            message.sender = "Feedserf Digest <digest@feedserf.com>"
             message.to = user_prefs.email
             message.subject = subject
             message.body = email_body_text

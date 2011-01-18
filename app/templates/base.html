@@ -30,7 +30,7 @@
             <div style="float:left; padding-top:0px;"><iframe style="height:26px;" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.feedserf.com%2F&amp;layout=button_count&amp;show_faces=false&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe></div>
             <div style="text-align:right; font-size:11px; margin-top:1px;">
                 <form action="/feeds" method="post">
-                    Feed: <input type="text" name="uri" style="border:1px solid lightgray; height:18px; margin:0px; padding:0px; font-size:12px;" /> 
+                    Feed: <input type="text" name="uri" style="border:1px solid lightgray; height:18px; margin:0px; padding:0px; font-size:12px;" {% if not user %}disabled{% endif %} /> 
                     <input type="submit" style=" height:17px; width:30px; margin:0px; padding:0px; font-size:10px;" value="add" />
                 </form>
             </div>
