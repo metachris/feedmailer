@@ -20,7 +20,7 @@ function suggestFeed() {
 
     <table border="0" class="aimg" id="feedlist" width="100%">
         {% for feed in feeds %}
-          <tr class="{% cycle even,odd %}">
+          <tr class="">
             <td style="width:40%;" valign="top" style="vertical-align:top;">
                 <div style="padding-bottom:0px; height:18px;"><a href="/feeds/update/{{ feed.key }}">{{ feed.title }}</a></div>
             </td>
@@ -33,8 +33,11 @@ function suggestFeed() {
             </div>
             </td>
           </tr>
+          {% comment %}
+            {% cycle even,odd %}
+            {% ifequal loop.count 0 %}<tr><td>xxx{{ loop.revcount0 }}</td></tr>{% if extra_cycle %}<tr class="{% cycle even,odd %}"><td>xxx</td></tr>{% endif %}{% endifequal %}
+          {% endcomment %}        
         {% endfor %}
-        
     </table>
         <div id="addfeed_main">
             {% if not feeds.count %}

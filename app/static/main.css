@@ -26,10 +26,6 @@ hr {
     margin-bottom:8px;
 }
 
-#feedlist td {
-    padding:0px 10px 4px 10px;    
-}
-
 p { margin-bottom:12px; }
 
 small { font-size:11px; }
@@ -103,8 +99,16 @@ small { font-size:11px; }
 }
 
 #feedlist {
-    border:1px solid lightgray;
+    /*border:1px solid lightgray; */
     margin-top:40px;
+}
+
+#feedlist td {
+    padding:0px 10px 4px 10px;    
+}
+
+#feedlist tr:hover {
+    background: #F9F9F9;
 }
 
 #feedsettings {
