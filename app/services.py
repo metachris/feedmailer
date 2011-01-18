@@ -53,7 +53,7 @@ class SendMailWorker(webapp.RequestHandler):
             return
 
         # Find all feeds with email scheduled for now or past        
-        _feeds = db.GqlQuery("SELECT * FROM Feed WHERE _digest_next <= :1", datetime.datetime.now())
+        _feeds = db.GqlQuery("SELECT * FROM Feed WHERE _digest_next <= :1 and user = :2", datetime.datetime.now())
         feeds = []
         for feed in _feeds:
             if feed.feeditem_set.count() > 0:
