@@ -4,7 +4,7 @@
     
     <ul>
     {% for feeditem in feed.items %}
-        <li><a href="{{ feeditem.title }}">{{ feeditem.link }}</a></li>        
+        <li><a href="{{ feeditem.link }}">{{ feeditem.title }}</a></li>        
     {% endfor %}
     </ul>
 {% endfor %}

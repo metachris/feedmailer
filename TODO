@@ -10,3 +10,5 @@ Backend
   
 [ ] User timezone setup. Currently all specified times are UTC (server time)
 
+[ ] feedparser.py breaks on http://feeds.feedburner.com/Mobilecrunch
+    UnicodeDecodeError: 'ascii' codec can't decode byte 0xe2 in position 8: ordinal not in range(128)
