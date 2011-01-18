@@ -101,7 +101,9 @@ class SendMailWorker(webapp.RequestHandler):
                 else:
                     subject += " and %s others" % (len(feeds) - 2)
                     break
-
+                    
+            subject.strip(",")
+            
             message = mail.EmailMessage()
             message.sender = "Feedserv Digest <digest@feedserf.com>"
             message.to = user_prefs.email
