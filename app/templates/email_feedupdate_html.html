@@ -1,8 +1,6 @@
 <html><head></head><body>
-<p>{{ feed_cnt }} feeds have update{{ feed_cnt|pluralize }}:</p>
-
 {% for feed in feeds %}
-    <h4>Feed: <a href="{{ feed.feed.link_web }}">{{ feed.feed.title }}</a></h4> 
+    <h4><a href="{{ feed.feed.link_web }}">{{ feed.feed.title }}</a></h4> 
     
     <ul>
     {% for feeditem in feed.items %}
