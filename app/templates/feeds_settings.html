@@ -8,7 +8,7 @@
 </script>
 
     <div style="height:14px;">
-        <div style="float:left;"><h3>Feed Settings</h3></div>
+        <div style="float:left;"><h3>Feed Settings <font style="font-size:12px; font-weight:normal; padding-left:10px;"><a href="/">back</a></font></h3></div>
         <div style="text-align:right;">    
             <form action="/feeds/delete/{{ feed.key }}" method="post">
                 <input type="submit" value="Remove Feed" style="border:1px solid white; background:white;"/>
@@ -23,18 +23,21 @@
     <table border="0">
     <tr><td valign="top">
     
-    <table border="0">
+    <table border="0" id="feedsettings">
       <tr><td>Feed:</td><td><a href="{{ feed.link_rss }}">{{ feed.title }}</a></td></tr>
       <tr><td>Date added:</td><td>{{ feed.date_added|date }}</td></tr>
       <tr><td>Last crawled:</td><td>{{ feed.date_last_crawled.date|date }}, {{ feed.date_last_crawled.time|time }} </td></tr>
-      <tr><td>New items:</td><td>{% if feed.feeditemnew_set.count %}{{ feed.feeditemnew_set.count }}{% else %}0{% endif %}</td></tr>
+      <tr><td><br></td></tr>
       <tr><td>Digest:</td><td>
           <select name="d" size="0" onChange="javascript:digestChange()">
               <option value="i" label="Instant" {% ifequal feed.digest_days 0 %}selected=selected{% endifequal %}>Instant</option>
               <option value="c" label="Custom" {% if feed.digest_days %}selected=selected{% endif %}>Custom</option>
           </select>
-    </td></tr>
-    <tr><td><br><input type="submit" value="Update" /></td></tr>
+          <input type="submit" value="Update" />
+      </td></tr>
+
+      <tr><td><br></td></tr>
+      <tr><td></td></tr>
       
     </table>
 

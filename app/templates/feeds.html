@@ -1,26 +1,52 @@
 {% extends "base.html" %}
 {% block content %}    
-        <h3>My Feeds</h3>
-    <div style="float:left; margin-top:14px;">
-    <table border="0" class="aimg" id="feedlist">
+<script type="text/javascript">
+function suggestFeed() {
+    var feeds = Array(
+        "http://feeds.feedburner.com/TechCrunch", 
+        "http://feeds.feedburner.com/AmazonWebServicesBlog", 
+        "http://www.engadget.com/rss.xml", 
+        "http://feeds.gawker.com/gizmodo/full", 
+        "http://android-developers.blogspot.com/atom.xml", 
+        "http://feeds.feedburner.com/PlanetAndroidCom", 
+        "http://feeds.feedburner.com/crunchgear", 
+        "http://feeds.feedburner.com/Mobilecrunch"
+    );
+    
+    var i = Math.floor(Math.random()*feeds.length);
+    document.getElementById("uri").value = feeds[i];
+} 
+</script>
+
+    <table border="0" class="aimg" id="feedlist" width="100%">
         {% for feed in feeds %}
           <tr class="{% cycle even,odd %}">
-            <td><a href="/feeds/update/{{ feed.key }}">{{ feed.title }}</a></td>
-            <td>{% ifequal feed.digest_days 0 %}Instant{% else %}{{ feed.digest_time|time }}&nbsp; <small>[{{ feed.digest_days|days_bitfield_humanize }}]</small>{% endifequal %}</td>
-            <td>
-                &nbsp;<small><a href="/feeds/update/{{ feed.key }}"><img src="/static/icons/email_edit.png" /></a>
-                &nbsp;&nbsp;&nbsp;<small><a href="{{ feed.link_web }}"><img src="/static/icons/page_world.png" /></a>
-                &nbsp;&nbsp;&nbsp;<small><a href="{{ feed.link_rss }}"><img src="/static/icons/feed.png" /></a>
+            <td style="width:40%;" valign="top" style="vertical-align:top;">
+                <div style="padding-bottom:0px; height:18px;"><a href="/feeds/update/{{ feed.key }}">{{ feed.title }}</a></div>
+            </td>
+            <td style="width:40%" valign="top">{% ifequal feed.digest_days 0 %}Instant{% else %}{{ feed.digest_time|time }}&nbsp; <small>[{{ feed.digest_days|days_bitfield_humanize }}]</small>{% endifequal %}</td>
+            <td style="width:20%; text-align:right;">
+            <div style="padding-top:2px;">
+                &nbsp;<a href="/feeds/update/{{ feed.key }}"><img style="border:0px solid black; margin-top:0px;;" src="/static/icons/email_edit.png" /></a>
+                &nbsp;&nbsp;&nbsp;<a href="{{ feed.link_web }}"><img src="/static/icons/page_world.png" /></a>
+                &nbsp;&nbsp;&nbsp;<a href="{{ feed.link_rss }}"><img src="/static/icons/feed.png" /></a>
+            </div>
             </td>
           </tr>
         {% endfor %}
         
     </table>
         <div id="addfeed_main">
+            {% if not feeds.count %}
+                <h3>Start by adding a feed</h3>
+                <br><br>
+            {% endif %}
             <form action="/feeds" method="post">
-                <font style="color:#444;">Add a feed:</font> <input type="text" name="uri" style="border:1px solid lightgray; height:18px; margin:0px; padding:0px; font-size:12px;" /> 
-                <input type="submit" style=" height:17px; width:30px; margin:0px; padding:0px; font-size:10px;" value="add" />
-            </form>        
-            </div>
-    </div>
+                <font style="color:#444;">Feed:</font> <input type="text" id="uri" name="uri" style="border:1px solid lightgray; height:22px; width:280px; margin:0px; padding:0px; font-size:12px;" /> 
+                <input type="submit" style=" height:20px; width:40px; margin:0px; padding:0px; font-size:10px;" value="add" />
+            </form>
+            <div style="margin-top:5px;"><small><a href="javascript:suggestFeed()" style="color:#7c9ab1">suggest</a></small></div>
+                    
+        </div>
+
 {% endblock %}

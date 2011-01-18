@@ -16,7 +16,7 @@ body {
 }
 
 td, th { padding: 1px 10px; text-align:left; }
-tr.even { background:#EFF5FF; }
+tr.even { background:#F9F9F9; }
 tr.odd  { }
 
 hr { 
@@ -27,7 +27,7 @@ hr {
 }
 
 #feedlist td {
-    padding:4px 20px;    
+    padding:0px 10px 4px 10px;    
 }
 
 p { margin-bottom:12px; }
@@ -35,24 +35,48 @@ p { margin-bottom:12px; }
 small { font-size:11px; }
 
 #header {
-    padding:10px 0px;   
+    padding:8px 0px 6px 0px;   
 }
 
 #header #logo {
     float:left;
-    font-size:18px;
+    font-size:19px;
+}
+
+#header #logo a {
+    text-decoration:none;
+    color:#131313;
+}
+#header #logo a:hover {
+    text-decoration:none;
 }
 
 #header #topnav {
     text-align:right;
     font-size:12px;
+    border:0px solid red;
+    margin-top:6px;
 }
 
+/*
 #nav {
     border-top:1px solid #36C;
     background:#E5ECF9;
     font-size:12px;
-    padding:4px 10px;
+    padding:3px 10px 5px 4px;
+    margin-top:0px;
+    margin-bottom:10px;   
+}
+*/
+
+#nav {
+    border-top:0px solid #36C;
+    border-radius:2px;
+    background:#F8CA00; /* red:#D95E10; */
+    font-size:12px;
+    color:#5C6A01;
+    font-weight:bold;
+    padding:3px 10px 3px 6px;
     margin-top:0px;
     margin-bottom:10px;   
 }
@@ -60,7 +84,7 @@ small { font-size:11px; }
 #content {
     font-size:14px;
     margin-top:20px;
-    padding:0px 20px;
+    padding:0px 2px;
 }
 
 #footer {
@@ -80,4 +104,13 @@ small { font-size:11px; }
 
 #feedlist {
     border:1px solid lightgray;
+    margin-top:40px;
+}
+
+#feedsettings {
+    
+}
+
+#feedsettings td {
+    padding:2px 20px;
 }

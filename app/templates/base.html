@@ -7,10 +7,10 @@
     
     <body>
         <div id="header">
-            <div id="logo">
-                Feedserf.com
+            <div id="logo" style="">
+                <div style="float:left; padding-top:2px; border:0px solid red;"><a href="/">Feedserf</a> <font style="font-size:11px; padding-left:30px;">Free. Easy. Open Source.</font></div>                
             </div>
-            <div id="topnav">
+            <div id="topnav" style="">
                 {% if user %}
                     <b>{{ user.email }}</b> &nbsp;|&nbsp; <!--<a href="/account">My Account</a> &nbsp;|&nbsp; --><a href="/help">Help</a> &nbsp;|&nbsp; <a href="/signout">Sign out</a>
                 {% else %}
@@ -20,10 +20,11 @@
         </div> 
 
         <div id="nav">
-            <div style="float:left; padding-top:0px;"><a href="/feeds">Feeds</a></div>
-            <div style="text-align:right; font-size:11px;">
+        
+            <div style="float:left; padding-top:0px;"><iframe style="height:26px;" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.feedserf.com%2F&amp;layout=button_count&amp;show_faces=false&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe></div>
+            <div style="text-align:right; font-size:11px; margin-top:1px;">
                 <form action="/feeds" method="post">
-                    Add a feed: <input type="text" name="uri" style="border:1px solid lightgray; height:18px; margin:0px; padding:0px; font-size:12px;" /> 
+                    Feed: <input type="text" name="uri" style="border:1px solid lightgray; height:18px; margin:0px; padding:0px; font-size:12px;" /> 
                     <input type="submit" style=" height:17px; width:30px; margin:0px; padding:0px; font-size:10px;" value="add" />
                 </form>
             </div>
