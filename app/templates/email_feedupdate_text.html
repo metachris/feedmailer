@@ -1,0 +1,9 @@
+{{ feed_cnt }} feeds have update{{ feed_cnt|pluralize }}:
+
+{% for feed in feeds %}
+{{ feed.feed.title }} ({{ feed.feed.link_web }})
+     
+{% for feeditem in feed.items %}- {{ feeditem.title }} ({{ feeditem.link }})
+{% endfor %}{% endfor %}
+
+Visit http://www.feedserf.com to manage your subscriptions.

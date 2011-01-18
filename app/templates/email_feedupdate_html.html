@@ -1,5 +1,5 @@
 <html><head></head><body>
-<p>You have {{ feed_cnt }} feed update{{ feed_cnt|pluralize }}:</p>
+<p>{{ feed_cnt }} feeds have update{{ feed_cnt|pluralize }}:</p>
 
 {% for feed in feeds %}
     <h4>Feed: <a href="{{ feed.feed.link_web }}">{{ feed.feed.title }}</a></h4> 

@@ -53,7 +53,7 @@ class SendMailWorker(webapp.RequestHandler):
             return
 
         # Find all feeds with email scheduled for now or past        
-        _feeds = db.GqlQuery("SELECT * FROM Feed WHERE _digest_next <= :1 and user = :2", datetime.datetime.now())
+        _feeds = db.GqlQuery("SELECT * FROM Feed WHERE _digest_next <= :1 and user = :2", datetime.datetime.now(), user_prefs.user)
         feeds = []
         for feed in _feeds:
             if feed.feeditem_set.count() > 0:
@@ -80,9 +80,12 @@ class SendMailWorker(webapp.RequestHandler):
         if len(feeds) > 0:
             # compile email now            
             template_values = { 'user': user_prefs.user, 'feeds': feeds, 'feed_cnt': len(feeds) }            
-            path = os.path.join(os.path.dirname(__file__), '%semail_feedupdate.html' % TEMPLATES_DIR)
-            email_body = template.render(path, template_values)        
-            print email_body
+
+            path = os.path.join(os.path.dirname(__file__), '%semail_feedupdate_text.html' % TEMPLATES_DIR)
+            email_body_text = template.render(path, template_values)        
+            path = os.path.join(os.path.dirname(__file__), '%semail_feedupdate_html.html' % TEMPLATES_DIR)
+            email_body_html = template.render(path, template_values)        
+            print email_body_text
             
             # Increment email sent counter on feeds
             for _feed in feeds:
@@ -98,8 +101,14 @@ class SendMailWorker(webapp.RequestHandler):
                 else:
                     subject += " and %s others" % (len(feeds) - 2)
                     break
-                
-            mail.send_mail(sender="Feedserv Digest <digest@feedserf.com>", to=user_prefs.email, subject=subject, body=email_body)
+
+            message = mail.EmailMessage()
+            message.sender = "Feedserv Digest <digest@feedserf.com>"
+            message.to = user_prefs.email
+            message.subject = subject
+            message.body = email_body_text
+            message.html = email_body_html
+            message.send()
             
             user_prefs.emails_received += 1
             user_prefs.emails_last = datetime.datetime.now()
