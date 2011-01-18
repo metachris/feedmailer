@@ -79,7 +79,7 @@ class SendMailWorker(webapp.RequestHandler):
         print "x"
         if len(feeds) > 0:
             # compile email now            
-            template_values = { 'user': user_prefs.user, 'feeds': feeds }            
+            template_values = { 'user': user_prefs.user, 'feeds': feeds, 'feed_cnt': len(feeds) }            
             path = os.path.join(os.path.dirname(__file__), '%semail_feedupdate.html' % TEMPLATES_DIR)
             email_body = template.render(path, template_values)        
             print email_body

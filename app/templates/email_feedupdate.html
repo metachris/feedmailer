@@ -1,13 +1,19 @@
-Hello, {{ user.nickname }}
-
-You have feed updates:
+<html><head></head><body>
+<p>You have {{ feed_cnt }} feed update{{ feed_cnt|pluralize }}:</p>
 
 {% for feed in feeds %}
-    Feed: {{ feed.feed.title }}, {{ feed.feed.link_web }}
+    <h4>Feed: <a href="{{ feed.feed.link_web }}">{{ feed.feed.title }}</a></h4> 
     
-    Items:
+    <ul>
     {% for feeditem in feed.items %}
-        {{ feeditem.title }}
-        {{ feeditem.link }}        
+        <li><a href="{{ feeditem.title }}">{{ feeditem.link }}</a></li>        
     {% endfor %}
+    </ul>
 {% endfor %}
+
+<br><br>
+
+<p>
+<small>To manage your subscriptions visit <a href="http://www.feedserf.com">feedserv.com</a>.</small>
+</p>
+</body></html>
